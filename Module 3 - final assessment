@@ -1,0 +1,42 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.13;
+
+import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v4.0.0/contracts/token/ERC20/ERC20.sol";
+import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v4.0.0/contracts/token/ERC20/extensions/ERC20Burnable.sol";
+import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v4.0.0/contracts/access/Ownable.sol";
+
+contract Yota is ERC20, ERC20Burnable, Ownable {
+    string private _name;
+    string private _symbol;
+
+    constructor(address initialOwner) ERC20("Yota", "YOTA") Ownable() {
+        transferOwnership(initialOwner);
+        _name = "Yota";
+        _symbol = "YOTA";
+        _mint(msg.sender, 10 * 1**uint(decimals()));
+    }
+
+    function mint(address to, uint256 amount) public onlyOwner {
+        _mint(to, amount);
+    }
+
+    // Function to change the token name
+    function setName(string memory newName) public onlyOwner {
+        _name = newName;
+    }
+
+    // Function to change the token symbol
+    function setSymbol(string memory newSymbol) public onlyOwner {
+        _symbol = newSymbol;
+    }
+
+    // Override name function to return updated name
+    function name() public view override returns (string memory) {
+        return _name;
+    }
+
+    // Override symbol function to return updated symbol
+    function symbol() public view override returns (string memory) {
+        return _symbol;
+    }
+}
